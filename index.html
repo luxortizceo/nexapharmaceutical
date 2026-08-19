@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexaPharm — Suplementos y Péptidos de Grado Clínico</title>
+<meta name="description" content="Suplementos y péptidos bioactivos formulados con ciencia clínica. Pureza verificada, pago seguro, resultados reales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="#inicio">
+        <span class="brand-mark">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L21 6.5V12C21 16.97 17.4 21.44 12 22.9C6.6 21.44 3 16.97 3 12V6.5L12 2Z" stroke="url(#navg1)" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M12 8V16M8 12H16" stroke="url(#navg1)" stroke-width="1.6" stroke-linecap="round"/>
+            <defs><linearGradient id="navg1" x1="3" y1="2" x2="21" y2="22"><stop stop-color="#5EEAD4"/><stop offset="1" stop-color="#818CF8"/></linearGradient></defs>
+          </svg>
+        </span>
+        NexaPharm
+      </a>
+      <nav class="nav-links" id="nav-links">
+        <a href="#suplementos">Suplementos</a>
+        <a href="#peptidos">Péptidos</a>
+        <a href="#ciencia">Ciencia</a>
+        <a href="#resenas">Reseñas</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="nav-cta" href="#catalogo">Comprar ahora</a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="inicio">
+    <div class="bg-cinematic" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="beam"></div>
+      <div class="grain"></div>
+      <div class="vignette"></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V5L12 2Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          Certificado GMP · Pruebas de terceros en cada lote
+        </span>
+        <h1>Ciencia celular.<br>Resultados <span class="text-gradient">reales</span>.</h1>
+        <p class="hero-lede">Suplementos y péptidos bioactivos formulados con precisión clínica. Cada fórmula nace en laboratorio, se verifica en pureza, y se entrega directo a tu puerta.</p>
+        <div class="hero-actions">
+          <a href="#catalogo" class="btn-primary">Ver catálogo</a>
+          <a href="#ciencia" class="btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M10 9l5 3-5 3V9z" fill="currentColor"/></svg>
+            Cómo funciona la ciencia
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>50,000+</strong><span>clientes activos</span></div>
+          <div class="hero-stat"><strong>4.9/5</strong><span>en 8,200+ reseñas</span></div>
+          <div class="hero-stat"><strong>100%</strong><span>pureza verificada</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-visual-glow"></div>
+        <svg viewBox="0 0 340 380" class="hero-podium">
+          <defs>
+            <linearGradient id="heroBottleGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#a7f3d0"/><stop offset="55%" stop-color="#5eead4"/><stop offset="100%" stop-color="#6366f1"/>
+            </linearGradient>
+            <linearGradient id="heroPouchGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#c7d2fe"/><stop offset="60%" stop-color="#818cf8"/><stop offset="100%" stop-color="#4338ca"/>
+            </linearGradient>
+            <linearGradient id="heroCapGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#94a3b8"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="170" cy="345" rx="130" ry="18" fill="#5eead4" opacity="0.08"/>
+          <!-- pouch (back, left) -->
+          <g transform="translate(20,120)" opacity="0.92">
+            <path d="M20 40 C20 26,28 14,42 8 L98 8 C112 14,120 26,120 40 L120 195 C120 205,112 213,102 213 L38 213 C28 213,20 205,20 195 Z" fill="url(#heroPouchGrad)"/>
+            <rect x="20" y="52" width="100" height="8" fill="rgba(6,10,18,0.35)"/>
+            <rect x="34" y="110" width="72" height="58" rx="6" fill="rgba(6,10,18,0.5)"/>
+            <text x="70" y="135" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="700" fill="#f8fafc">NEXA</text>
+            <text x="70" y="150" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="7" fill="#e0e7ff" letter-spacing="1">PEPTIDES</text>
+          </g>
+          <!-- bottle (front, right) -->
+          <g transform="translate(150,60)">
+            <rect x="38" y="6" width="60" height="30" rx="5" fill="url(#heroCapGrad)"/>
+            <rect x="44" y="0" width="48" height="12" rx="4" fill="#cbd5e1"/>
+            <path d="M28 42h108c8 0 14 6 14 15v190c0 10-8 18-18 18H32c-10 0-18-8-18-18V57c0-9 6-15 14-15z" fill="url(#heroBottleGrad)"/>
+            <rect x="20" y="128" width="104" height="66" rx="8" fill="rgba(6,10,18,0.55)"/>
+            <text x="72" y="158" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="700" fill="#f8fafc">NEXA</text>
+            <text x="72" y="176" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="9" fill="#cbd5e1" letter-spacing="1.5">RENEW · 90ct</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <a class="scroll-cue" href="#catalogo" aria-label="Bajar al catálogo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4v16M6 14l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </section>
+
+  <!-- ============ TRUST BAR ============ -->
+  <section class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L20 6V12C20 17 16.5 21 12 22C7.5 21 4 17 4 12V6L12 2Z" stroke="currentColor" stroke-width="1.6"/></svg> Certificado GMP</div>
+      <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 3v4M15 3v4M4 8h16M5 8v11a2 2 0 002 2h10a2 2 0 002-2V8" stroke="currentColor" stroke-width="1.6"/></svg> Pruebas de terceros</div>
+      <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12h4l3 8 4-16 3 8h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Fabricado en EE. UU.</div>
+      <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 7V5a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.6"/></svg> Envío discreto</div>
+      <div class="trust-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Garantía de 60 días</div>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORY SPLIT ============ -->
+  <section class="category-split" id="catalogo">
+    <div class="section-inner">
+      <span class="section-eyebrow">Catálogo</span>
+      <h2>Dos líneas. Un mismo estándar.</h2>
+      <div class="category-cards">
+        <a class="category-card cat-supplements" href="#suplementos">
+          <div class="cat-icon">
+            <svg viewBox="0 0 64 80" width="52" height="65"><rect x="16" y="4" width="32" height="14" rx="3" fill="#cbd5e1"/><path d="M12 20h40c5 0 9 4 9 9v40c0 6-5 11-11 11H14c-6 0-11-5-11-11V29c0-5 4-9 9-9z" fill="url(#svgCatSupp)"/><defs><linearGradient id="svgCatSupp" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a7f3d0"/><stop offset="1" stop-color="#34d399"/></linearGradient></defs></svg>
+          </div>
+          <div>
+            <h3>Suplementos</h3>
+            <p>Cápsulas de longevidad, recuperación y bienestar diario formuladas para absorción máxima.</p>
+          </div>
+          <span class="cat-arrow">→</span>
+        </a>
+        <a class="category-card cat-peptides" href="#peptidos">
+          <div class="cat-icon">
+            <svg viewBox="0 0 64 80" width="52" height="65"><path d="M14 18C14 12 19 8 26 8h12c7 0 12 4 12 10v4H14v-4z" fill="#c7d2fe"/><path d="M12 22h40c4 0 7 3 7 7v37c0 5-4 9-9 9H14c-5 0-9-4-9-9V29c0-4 3-7 7-7z" fill="url(#svgCatPep)"/><defs><linearGradient id="svgCatPep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c7d2fe"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs></svg>
+          </div>
+          <div>
+            <h3>Péptidos</h3>
+            <p>Péptidos bioactivos de colágeno, marinos y de recuperación en polvo y cápsula.</p>
+          </div>
+          <span class="cat-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUPLEMENTOS ============ -->
+  <section class="product-section" id="suplementos">
+    <div class="section-inner">
+      <span class="section-eyebrow">Suplementos</span>
+      <h2>Fórmulas para tu biología diaria</h2>
+      <p class="section-lede">Ingredientes de grado clínico, dosis respaldadas por literatura científica y transparencia total en cada etiqueta.</p>
+
+      <div class="product-grid">
+
+        <article class="product-tile" data-id="renew" data-name="NexaPharm® Renew" data-sub="Complejo avanzado de salud celular · 90 cápsulas" data-price="89.00" data-eyebrow="Compra única · Envío prioritario">
+          <span class="tile-badge">Más vendido</span>
+          <div class="tile-visual">
+            <svg viewBox="0 0 120 160" width="84" height="112">
+              <defs><linearGradient id="pg-renew" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a7f3d0"/><stop offset="55%" stop-color="#5eead4"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs>
+              <rect x="38" y="10" width="44" height="22" rx="4" fill="#cbd5e1"/><rect x="42" y="4" width="36" height="10" rx="3" fill="#e2e8f0"/>
+              <path d="M32 32h56c6 0 10 5 10 12v96c0 8-6 14-14 14H36c-8 0-14-6-14-14V44c0-7 4-12 10-12z" fill="url(#pg-renew)"/>
+              <rect x="24" y="76" width="72" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+              <text x="60" y="103" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" font-weight="700" fill="#f8fafc">RENEW</text>
+            </svg>
+          </div>
+          <h3>NexaPharm® Renew</h3>
+          <p class="tile-sub">Complejo avanzado de salud celular — 90 cápsulas</p>
+          <div class="tile-rating"><span class="stars">★★★★★</span> 4.9 (2,340)</div>
+          <div class="tile-footer">
+            <span class="tile-price">$89.00</span>
+            <button type="button" class="btn-add">Agregar al pedido</button>
+          </div>
+        </article>
+
+        <article class="product-tile" data-id="omega" data-name="NexaPharm® Omega+" data-sub="Omega-3 fosfolípido de alta absorción · 60 cápsulas" data-price="54.00" data-eyebrow="Compra única · Envío prioritario">
+          <div class="tile-visual">
+            <svg viewBox="0 0 120 160" width="84" height="112">
+              <defs><linearGradient id="pg-omega" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fde68a"/><stop offset="55%" stop-color="#5eead4"/><stop offset="100%" stop-color="#0ea5a5"/></linearGradient></defs>
+              <rect x="38" y="10" width="44" height="22" rx="4" fill="#cbd5e1"/><rect x="42" y="4" width="36" height="10" rx="3" fill="#e2e8f0"/>
+              <path d="M32 32h56c6 0 10 5 10 12v96c0 8-6 14-14 14H36c-8 0-14-6-14-14V44c0-7 4-12 10-12z" fill="url(#pg-omega)"/>
+              <rect x="24" y="76" width="72" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+              <text x="60" y="103" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="700" fill="#f8fafc">OMEGA+</text>
+            </svg>
+          </div>
+          <h3>NexaPharm® Omega+</h3>
+          <p class="tile-sub">Omega-3 fosfolípido de alta absorción — 60 cápsulas</p>
+          <div class="tile-rating"><span class="stars">★★★★★</span> 4.8 (1,180)</div>
+          <div class="tile-footer">
+            <span class="tile-price">$54.00</span>
+            <button type="button" class="btn-add">Agregar al pedido</button>
+          </div>
+        </article>
+
+        <article class="product-tile" data-id="magnesium" data-name="NexaPharm® Mag Glicinato" data-sub="Magnesio quelado para sueño y recuperación · 120 cápsulas" data-price="34.00" data-eyebrow="Compra única · Envío prioritario">
+          <div class="tile-visual">
+            <svg viewBox="0 0 120 160" width="84" height="112">
+              <defs><linearGradient id="pg-mag" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ddd6fe"/><stop offset="55%" stop-color="#818cf8"/><stop offset="100%" stop-color="#4338ca"/></linearGradient></defs>
+              <rect x="38" y="10" width="44" height="22" rx="4" fill="#cbd5e1"/><rect x="42" y="4" width="36" height="10" rx="3" fill="#e2e8f0"/>
+              <path d="M32 32h56c6 0 10 5 10 12v96c0 8-6 14-14 14H36c-8 0-14-6-14-14V44c0-7 4-12 10-12z" fill="url(#pg-mag)"/>
+              <rect x="24" y="76" width="72" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+              <text x="60" y="103" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="12" font-weight="700" fill="#f8fafc">MAG</text>
+            </svg>
+          </div>
+          <h3>NexaPharm® Mag Glicinato</h3>
+          <p class="tile-sub">Magnesio quelado para sueño y recuperación — 120 cápsulas</p>
+          <div class="tile-rating"><span class="stars">★★★★★</span> 4.7 (940)</div>
+          <div class="tile-footer">
+            <span class="tile-price">$34.00</span>
+            <button type="button" class="btn-add">Agregar al pedido</button>
+          </div>
+        </article>
+
+        <article class="product-tile" data-id="d3k2" data-name="NexaPharm® Vitality D3+K2" data-sub="Vitamina D3 y K2 en sinergia · 60 cápsulas" data-price="29.00" data-eyebrow="Compra única · Envío prioritario">
+          <span class="tile-badge tile-badge-new">Nuevo</span>
+          <div class="tile-visual">
+            <svg viewBox="0 0 120 160" width="84" height="112">
+              <defs><linearGradient id="pg-d3k2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fef3c7"/><stop offset="55%" stop-color="#f5c453"/><stop offset="100%" stop-color="#c9a24a"/></linearGradient></defs>
+              <rect x="38" y="10" width="44" height="22" rx="4" fill="#cbd5e1"/><rect x="42" y="4" width="36" height="10" rx="3" fill="#e2e8f0"/>
+              <path d="M32 32h56c6 0 10 5 10 12v96c0 8-6 14-14 14H36c-8 0-14-6-14-14V44c0-7 4-12 10-12z" fill="url(#pg-d3k2)"/>
+              <rect x="24" y="76" width="72" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+              <text x="60" y="103" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="9" font-weight="700" fill="#f8fafc">D3+K2</text>
+            </svg>
+          </div>
+          <h3>NexaPharm® Vitality D3+K2</h3>
+          <p class="tile-sub">Vitamina D3 y K2 en sinergia — 60 cápsulas</p>
+          <div class="tile-rating"><span class="stars">★★★★★</span> 4.8 (760)</div>
+          <div class="tile-footer">
+            <span class="tile-price">$29.00</span>
+            <button type="button" class="btn-add">Agregar al pedido</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PEPTIDOS ============ -->
+  <section class="product-section product-section-tint" id="peptidos">
+    <div class="section-inner">
+      <span class="section-eyebrow">Péptidos</span>
+      <h2>Péptidos bioactivos, explicados con claridad</h2>
+      <p class="section-lede">Los péptidos son cadenas cortas de aminoácidos que el cuerpo ya reconoce y utiliza. Nuestras fórmulas orales y tópicas están diseñadas para complementar procesos naturales de piel, articulaciones y recuperación — no son inyectables ni sustancias de investigación.</p>
+
+      <div class="product-grid">
+
+        <article class="product-tile" data-id="collagen" data-name="NexaPharm® Collagen Peptides" data-sub="Péptidos de colágeno hidrolizado tipo I y III · 300 g" data-price="59.00" data-eyebrow="Compra única · Envío prioritario" data-icon="pouch">
+          <span class="tile-badge">Más vendido</span>
+          <div class="tile-visual">
+            <svg viewBox="0 0 120 160" width="84" height="112">
+              <defs><linearGradient id="pg-collagen" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c7d2fe"/><stop offset="60%" stop-color="#818cf8"/><stop offset="100%" stop-color="#4338ca"/></linearGradient></defs>
+              <path d="M22 40 C22 28,29 18,40 12 L80 12 C91 18,98 28,98 40 L98 138 C98 147,91 154,82 154 L38 154 C29 154,22 147,22 138 Z" fill="url(#pg-collagen)"/>
+              <rect x="22" y="50" width="76" height="7" fill="rgba(6,10,18,0.35)"/>
+              <rect x="32" y="92" width="56" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+              <text x="60" y="118" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="9" font-weight="700" fill="#f8fafc">COLLAGEN</text>
+            </svg>
+          </div>
+          <h3>NexaPharm® Collagen Peptides</h3>
+          <p class="tile-sub">Colágeno hidrolizado tipo I y III — 300 g en polvo</p>
+          <div class="tile-rating"><span class="stars">★★★★★</span> 4.9 (1,560)</div>
+          <div class="tile-footer">
+            <span class="tile-price">$59.00</span>
+            <button type="button" class="btn-add">Agregar al pedido</button>
+          </div>
+        </article>
+
+        <article class="product-tile" data-id="marine" data-name="NexaPharm® Marine Peptide Complex" data-sub="Péptidos marinos bioactivos · 60 cápsulas" data-price="69.00" data-eyebrow="Compra única · Envío prioritario">
+          <div class="tile-visual">
+            <svg viewBox="0 0 120 160" width="84" height="112">
+              <defs><linearGradient id="pg-marine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a5f3fc"/><stop offset="55%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#4338ca"/></linearGradient></defs>
+              <rect x="38" y="10" width="44" height="22" rx="4" fill="#cbd5e1"/><rect x="42" y="4" width="36" height="10" rx="3" fill="#e2e8f0"/>
+              <path d="M32 32h56c6 0 10 5 10 12v96c0 8-6 14-14 14H36c-8 0-14-6-14-14V44c0-7 4-12 10-12z" fill="url(#pg-marine)"/>
+              <rect x="24" y="76" width="72" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+              <text x="60" y="103" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="8.5" font-weight="700" fill="#f8fafc">MARINE</text>
+            </svg>
+          </div>
+          <h3>NexaPharm® Marine Peptide Complex</h3>
+          <p class="tile-sub">Péptidos marinos para piel y articulaciones — 60 cápsulas</p>
+          <div class="tile-rating"><span class="stars">★★★★★</span> 4.7 (520)</div>
+          <div class="tile-footer">
+            <span class="tile-price">$69.00</span>
+            <button type="button" class="btn-add">Agregar al pedido</button>
+          </div>
+        </article>
+
+        <article class="product-tile" data-id="nad" data-name="NexaPharm® NAD+ Peptide Boost" data-sub="Complejo de péptidos precursores de NAD+ · 30 cápsulas" data-price="99.00" data-eyebrow="Compra única · Envío prioritario">
+          <span class="tile-badge tile-badge-premium">Premium</span>
+          <div class="tile-visual">
+            <svg viewBox="0 0 120 160" width="84" height="112">
+              <defs><linearGradient id="pg-nad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbcfe8"/><stop offset="55%" stop-color="#c026d3"/><stop offset="100%" stop-color="#4338ca"/></linearGradient></defs>
+              <rect x="38" y="10" width="44" height="22" rx="4" fill="#cbd5e1"/><rect x="42" y="4" width="36" height="10" rx="3" fill="#e2e8f0"/>
+              <path d="M32 32h56c6 0 10 5 10 12v96c0 8-6 14-14 14H36c-8 0-14-6-14-14V44c0-7 4-12 10-12z" fill="url(#pg-nad)"/>
+              <rect x="24" y="76" width="72" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+              <text x="60" y="103" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="11" font-weight="700" fill="#f8fafc">NAD+</text>
+            </svg>
+          </div>
+          <h3>NexaPharm® NAD+ Peptide Boost</h3>
+          <p class="tile-sub">Péptidos precursores de NAD+ — 30 cápsulas</p>
+          <div class="tile-rating"><span class="stars">★★★★★</span> 4.8 (410)</div>
+          <div class="tile-footer">
+            <span class="tile-price">$99.00</span>
+            <button type="button" class="btn-add">Agregar al pedido</button>
+          </div>
+        </article>
+
+        <article class="product-tile" data-id="recovery" data-name="NexaPharm® Recovery Peptide Blend" data-sub="Péptidos de suero hidrolizado · 450 g" data-price="64.00" data-eyebrow="Compra única · Envío prioritario" data-icon="pouch">
+          <div class="tile-visual">
+            <svg viewBox="0 0 120 160" width="84" height="112">
+              <defs><linearGradient id="pg-recovery" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#bbf7d0"/><stop offset="60%" stop-color="#34d399"/><stop offset="100%" stop-color="#0f766e"/></linearGradient></defs>
+              <path d="M22 40 C22 28,29 18,40 12 L80 12 C91 18,98 28,98 40 L98 138 C98 147,91 154,82 154 L38 154 C29 154,22 147,22 138 Z" fill="url(#pg-recovery)"/>
+              <rect x="22" y="50" width="76" height="7" fill="rgba(6,10,18,0.35)"/>
+              <rect x="32" y="92" width="56" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+              <text x="60" y="118" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="8.5" font-weight="700" fill="#f8fafc">RECOVERY</text>
+            </svg>
+          </div>
+          <h3>NexaPharm® Recovery Peptide Blend</h3>
+          <p class="tile-sub">Péptidos de suero hidrolizado — 450 g en polvo</p>
+          <div class="tile-rating"><span class="stars">★★★★★</span> 4.6 (690)</div>
+          <div class="tile-footer">
+            <span class="tile-price">$64.00</span>
+            <button type="button" class="btn-add">Agregar al pedido</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CIENCIA / INFORMATIVA ============ -->
+  <section class="science-section" id="ciencia">
+    <div class="section-inner science-grid">
+      <div class="science-intro">
+        <span class="section-eyebrow">La ciencia</span>
+        <h2>Cómo pensamos las fórmulas</h2>
+        <p>Cada producto NexaPharm pasa por tres filtros antes de llegar a un frasco: evidencia científica, pureza verificable y dosis clínicamente relevantes. Esto es lo que eso significa en la práctica.</p>
+      </div>
+      <div class="science-list">
+        <div class="science-item">
+          <div class="science-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 3h6M10 3v6l-6 10a2 2 0 001.7 3h12.6a2 2 0 001.7-3l-6-10V3" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+          <div>
+            <h3>¿Qué son los péptidos bioactivos?</h3>
+            <p>Son fragmentos cortos de proteínas — cadenas de aminoácidos que el organismo reconoce y metaboliza con facilidad. Nuestros péptidos orales y tópicos (colágeno, marinos, de suero) están pensados como complemento nutricional, no como fármacos.</p>
+          </div>
+        </div>
+        <div class="science-item">
+          <div class="science-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div>
+            <h3>Dosis con respaldo, no de moda</h3>
+            <p>Cada cantidad en nuestra etiqueta corresponde a rangos estudiados en literatura científica pública — ni sub-dosificamos para bajar costos, ni exageramos para vender más.</p>
+          </div>
+        </div>
+        <div class="science-item">
+          <div class="science-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 8h16M4 8l1.5 11a2 2 0 002 2h9a2 2 0 002-2L20 8M9 8V5a3 3 0 016 0v3" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+          <div>
+            <h3>Pureza verificada por terceros</h3>
+            <p>Cada lote se envía a laboratorios independientes para confirmar potencia, ausencia de metales pesados y microbiología. Los certificados de análisis están disponibles a solicitud.</p>
+          </div>
+        </div>
+        <div class="science-item">
+          <div class="science-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2a5 5 0 015 5v3a5 5 0 01-10 0V7a5 5 0 015-5z" stroke="currentColor" stroke-width="1.6"/><path d="M6 11v1a6 6 0 0012 0v-1M12 18v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div>
+            <h3>Seguridad primero</h3>
+            <p>Ningún suplemento reemplaza atención médica. Consulta a tu profesional de salud antes de iniciar cualquier fórmula, en especial si estás embarazada, en lactancia, tomas medicamentos o tienes una condición preexistente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED FORMULA ============ -->
+  <section class="formula-section">
+    <div class="bg-cinematic formula-bg" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="grain"></div>
+      <div class="vignette"></div>
+    </div>
+    <div class="section-inner formula-grid">
+      <div class="formula-visual">
+        <div class="visual-glow formula-glow"></div>
+        <svg viewBox="0 0 160 200" width="150" height="190">
+          <defs><linearGradient id="pg-formula" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a7f3d0"/><stop offset="55%" stop-color="#5eead4"/><stop offset="100%" stop-color="#6366f1"/></linearGradient></defs>
+          <rect x="52" y="14" width="56" height="26" rx="5" fill="#cbd5e1"/><rect x="58" y="6" width="44" height="12" rx="4" fill="#e2e8f0"/>
+          <path d="M42 42h76c8 0 14 6 14 15v122c0 10-8 18-18 18H46c-10 0-18-8-18-18V57c0-9 6-15 14-15z" fill="url(#pg-formula)"/>
+          <rect x="32" y="96" width="96" height="60" rx="8" fill="rgba(6,10,18,0.55)"/>
+          <text x="80" y="126" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="700" fill="#f8fafc">NEXA</text>
+          <text x="80" y="144" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="9" fill="#cbd5e1" letter-spacing="1.5">RENEW</text>
+        </svg>
+      </div>
+      <div class="formula-panel">
+        <span class="section-eyebrow">Fórmula destacada</span>
+        <h2>NexaPharm® Renew, ingrediente por ingrediente</h2>
+        <p class="formula-lede">Nuestro complejo insignia de salud celular. Cuatro ingredientes activos, cada uno en la dosis que respalda la evidencia disponible.</p>
+        <table class="ingredient-table">
+          <tbody>
+            <tr><td>Resveratrol (trans-resveratrol)</td><td>250 mg</td></tr>
+            <tr><td>Coenzima Q10</td><td>100 mg</td></tr>
+            <tr><td>NMN (mononucleótido de nicotinamida)</td><td>300 mg</td></tr>
+            <tr><td>Extracto de espermidina (trigo)</td><td>5 mg</td></tr>
+            <tr><td>Complejo de vitamina B</td><td>100% VD</td></tr>
+          </tbody>
+        </table>
+        <p class="formula-fineprint">Modo de uso: 3 cápsulas al día con alimentos. Sin gluten · Sin OGM · Fabricado en instalaciones certificadas GMP en EE. UU.</p>
+        <button type="button" class="btn-primary btn-add" data-id="renew" data-name="NexaPharm® Renew" data-sub="Complejo avanzado de salud celular · 90 cápsulas" data-price="89.00" data-eyebrow="Compra única · Envío prioritario">Agregar al pedido — $89.00</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="testimonials-section" id="resenas">
+    <div class="section-inner">
+      <span class="section-eyebrow">Reseñas</span>
+      <h2>Lo que dicen quienes ya lo probaron</h2>
+      <div class="testimonial-grid">
+        <article class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>“Llevo tres meses con Renew y la diferencia en mis niveles de energía por la tarde es notable. El envío llegó en dos días.”</p>
+          <div class="testimonial-author"><strong>Marcela T.</strong><span>Ciudad de México</span></div>
+        </article>
+        <article class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>“Los péptidos de colágeno se disuelven sin dejar grumos y no tienen sabor raro. Uso uno en el café todas las mañanas.”</p>
+          <div class="testimonial-author"><strong>Daniel R.</strong><span>Bogotá</span></div>
+        </article>
+        <article class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>“Me gustó que el certificado de análisis del lote esté disponible en la página. Se nota que hay control de calidad real.”</p>
+          <div class="testimonial-author"><strong>Sofía L.</strong><span>Madrid</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="faq-section" id="faq">
+    <div class="section-inner faq-inner">
+      <span class="section-eyebrow">Preguntas frecuentes</span>
+      <h2>Todo lo que necesitas saber</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>¿Los péptidos que venden son inyectables?</summary>
+          <p>No. Todos nuestros productos con péptidos son suplementos orales (cápsulas o polvo) de venta libre, como colágeno hidrolizado o péptidos marinos. No vendemos ni distribuimos péptidos inyectables ni sustancias de investigación.</p>
+        </details>
+        <details class="faq-item">
+          <summary>¿Cuánto tarda el envío?</summary>
+          <p>Los pedidos se procesan en 24–48 horas y llegan en 2–5 días hábiles según tu ubicación, en empaque discreto sin mención del contenido en el exterior.</p>
+        </details>
+        <details class="faq-item">
+          <summary>¿Puedo cancelar una suscripción?</summary>
+          <p>Sí, en cualquier momento desde tu cuenta o escribiendo a soporte, sin penalización ni preguntas. El siguiente envío programado simplemente no se cobra.</p>
+        </details>
+        <details class="faq-item">
+          <summary>¿Cómo verifican la pureza de cada lote?</summary>
+          <p>Cada lote se analiza en un laboratorio independiente por potencia, metales pesados y microbiología antes de salir a la venta. Puedes solicitar el certificado de análisis (CoA) de tu lote específico.</p>
+        </details>
+        <details class="faq-item">
+          <summary>¿Necesito consultar a un médico antes de tomar estos productos?</summary>
+          <p>Te lo recomendamos, especialmente si estás embarazada, en lactancia, tomas medicamentos o tienes una condición médica preexistente. Ningún suplemento reemplaza atención médica profesional.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHECKOUT ============ -->
+  <section class="checkout-section" id="checkout">
+    <div class="bg-cinematic" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="beam"></div>
+      <div class="grain"></div>
+      <div class="vignette"></div>
+    </div>
+
+    <div class="checkout-page">
+      <div class="checkout-topbar">
+        <span class="section-eyebrow">Finalizar compra</span>
+        <div class="secure-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V5L12 2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Conexión cifrada de extremo a extremo
+        </div>
+      </div>
+
+      <div class="checkout-grid">
+
+        <!-- LEFT: ORDER SUMMARY -->
+        <section class="summary-panel">
+          <div class="product-card">
+            <div class="product-visual" id="co-visual">
+              <div class="visual-glow"></div>
+              <svg viewBox="0 0 120 160" class="bottle" width="88" height="118">
+                <defs>
+                  <linearGradient id="bottleGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#a7f3d0"/><stop offset="55%" stop-color="#5eead4"/><stop offset="100%" stop-color="#6366f1"/>
+                  </linearGradient>
+                  <linearGradient id="capGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#94a3b8"/>
+                  </linearGradient>
+                </defs>
+                <rect x="38" y="10" width="44" height="22" rx="4" fill="url(#capGrad)"/>
+                <rect x="42" y="4" width="36" height="10" rx="3" fill="#cbd5e1"/>
+                <path d="M32 32h56c6 0 10 5 10 12v96c0 8-6 14-14 14H36c-8 0-14-6-14-14V44c0-7 4-12 10-12z" fill="url(#bottleGrad)" opacity="0.95"/>
+                <rect x="24" y="76" width="72" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
+                <text x="60" y="97" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="700" fill="#f8fafc" id="co-visual-label1">NEXA</text>
+                <text x="60" y="110" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="7" fill="#cbd5e1" letter-spacing="1" id="co-visual-label2">RENEW · 90ct</text>
+              </svg>
+            </div>
+            <div class="product-info">
+              <span class="eyebrow" id="co-eyebrow">Compra única · Envío prioritario</span>
+              <h1 id="co-name">NexaPharm<sup>®</sup> Renew</h1>
+              <p class="product-sub" id="co-sub">Complejo avanzado de salud celular — fórmula clínica, 90 cápsulas</p>
+              <div class="rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-count">4.9 · 2,340 reseñas verificadas</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="plan-toggle" role="radiogroup" aria-label="Frecuencia de compra">
+            <label class="plan-option">
+              <input type="radio" name="plan" value="onetime" checked>
+              <div class="plan-body">
+                <div class="plan-title">Compra única</div>
+                <div class="plan-desc">Sin compromiso</div>
+              </div>
+              <div class="plan-price" id="plan-onetime-price">$89.00</div>
+            </label>
+            <label class="plan-option is-recommended">
+              <input type="radio" name="plan" value="subscribe">
+              <div class="plan-body">
+                <div class="plan-title">Suscríbete y ahorra 20%</div>
+                <div class="plan-desc">Envío gratis cada mes · cancela cuando quieras</div>
+              </div>
+              <div class="plan-price" id="plan-subscribe-price">$71.20</div>
+            </label>
+          </div>
+
+          <div class="price-breakdown">
+            <div class="price-row">
+              <span>Subtotal</span>
+              <span id="row-subtotal">$89.00</span>
+            </div>
+            <div class="price-row">
+              <span>Envío</span>
+              <span id="row-shipping" class="text-accent">Gratis</span>
+            </div>
+            <div class="price-row" id="row-discount-wrap" hidden>
+              <span>Descuento <span id="promo-tag"></span></span>
+              <span id="row-discount" class="text-accent">−$0.00</span>
+            </div>
+            <div class="price-row">
+              <span>Impuestos estimados</span>
+              <span id="row-tax">$6.23</span>
+            </div>
+            <div class="price-divider"></div>
+            <div class="price-row price-total">
+              <span>Total</span>
+              <span id="row-total">$95.23</span>
+            </div>
+          </div>
+
+          <div class="promo-row">
+            <input type="text" id="promo-input" placeholder="Código de descuento" autocomplete="off">
+            <button type="button" id="promo-apply">Aplicar</button>
+          </div>
+          <p class="promo-msg" id="promo-msg"></p>
+
+          <ul class="trust-list">
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Certificado GMP &amp; probado por terceros</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Garantía de devolución de 60 días</li>
+            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Envío discreto en 24–48h</li>
+          </ul>
+        </section>
+
+        <!-- RIGHT: PAYMENT -->
+        <section class="payment-panel">
+          <div class="glass-card">
+
+            <div class="card-visual-wrap">
+              <div class="card3d" id="card3d">
+                <div class="card-face card-front">
+                  <div class="card-top">
+                    <div class="chip"></div>
+                    <div class="card-scheme" id="scheme-badge">
+                      <span class="scheme-dot dot-a"></span><span class="scheme-dot dot-b"></span>
+                    </div>
+                  </div>
+                  <div class="card-number" id="card-preview-number">•••• •••• •••• ••••</div>
+                  <div class="card-bottom">
+                    <div class="card-holder">
+                      <label>Titular</label>
+                      <span id="card-preview-name">NOMBRE APELLIDO</span>
+                    </div>
+                    <div class="card-expiry">
+                      <label>Vence</label>
+                      <span id="card-preview-expiry">MM/YY</span>
+                    </div>
+                  </div>
+                  <div class="card-shine"></div>
+                </div>
+                <div class="card-face card-back">
+                  <div class="magnetic-strip"></div>
+                  <div class="signature-row">
+                    <div class="signature-strip"></div>
+                    <div class="cvc-box" id="card-preview-cvc">•••</div>
+                  </div>
+                  <div class="card-shine"></div>
+                </div>
+              </div>
+            </div>
+
+            <form id="checkout-form" novalidate>
+              <div class="field">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
+                <span class="field-error" data-for="email"></span>
+              </div>
+
+              <div class="express-row">
+                <button type="button" class="express-btn apple-pay" data-express="Apple Pay">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.7 1c.1 1.1-.3 2.2-1 3-.7.8-1.8 1.5-2.9 1.4-.1-1.1.4-2.2 1-3 .8-.8 2-1.4 2.9-1.4zM19.9 17.3c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.7-.9-1.9 0-2.4.9-3.7.9-1.6 0-2.8-1.5-3.7-2.9C1.4 17 .6 12.4 2.4 9.3c.9-1.6 2.5-2.6 4.2-2.6 1.5 0 2.5 1 3.7 1 1.2 0 2-.9 3.7-.9 1.4 0 2.9.8 3.8 2.1-3.3 1.8-2.8 6.6.1 8.4z"/></svg>
+                  Apple Pay
+                </button>
+                <button type="button" class="express-btn google-pay" data-express="Google Pay">
+                  <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 11v2.9h4.1c-.2 1-1.4 3-4.1 3-2.5 0-4.5-2-4.5-4.5S9.5 7.9 12 7.9c1.4 0 2.4.6 2.9 1.1l2-1.9C15.6 5.9 14 5.2 12 5.2c-3.7 0-6.8 3-6.8 6.8s3.1 6.8 6.8 6.8c3.9 0 6.5-2.7 6.5-6.6 0-.4 0-.8-.1-1.2H12z"/></svg>
+                  Google Pay
+                </button>
+                <button type="button" class="express-btn link-pay" data-express="Link">
+                  <span class="link-dot">•</span> link
+                </button>
+              </div>
+
+              <div class="divider"><span>o paga con tarjeta</span></div>
+
+              <div class="field">
+                <label for="cardNumber">Número de tarjeta</label>
+                <div class="input-with-icon">
+                  <input type="text" id="cardNumber" inputmode="numeric" placeholder="1234 1234 1234 1234" autocomplete="cc-number" maxlength="23" required>
+                  <span class="card-brand-icon" id="brand-icon">
+                    <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="2.5" fill="#2A3344"/></svg>
+                  </span>
+                </div>
+                <span class="field-error" data-for="cardNumber"></span>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="expiry">Vencimiento</label>
+                  <input type="text" id="expiry" inputmode="numeric" placeholder="MM/YY" autocomplete="cc-exp" maxlength="5" required>
+                  <span class="field-error" data-for="expiry"></span>
+                </div>
+                <div class="field">
+                  <label for="cvc">CVC</label>
+                  <input type="text" id="cvc" inputmode="numeric" placeholder="123" autocomplete="cc-csc" maxlength="4" required>
+                  <span class="field-error" data-for="cvc"></span>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="cardName">Nombre en la tarjeta</label>
+                <input type="text" id="cardName" placeholder="Nombre completo" autocomplete="cc-name" required>
+                <span class="field-error" data-for="cardName"></span>
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="country">País</label>
+                  <select id="country" autocomplete="country">
+                    <option value="US">Estados Unidos</option>
+                    <option value="MX">México</option>
+                    <option value="CO">Colombia</option>
+                    <option value="AR">Argentina</option>
+                    <option value="ES">España</option>
+                    <option value="CL">Chile</option>
+                    <option value="PE">Perú</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="zip">Código postal</label>
+                  <input type="text" id="zip" inputmode="numeric" placeholder="00000" autocomplete="postal-code" maxlength="10" required>
+                  <span class="field-error" data-for="zip"></span>
+                </div>
+              </div>
+
+              <label class="save-info">
+                <input type="checkbox" checked>
+                Guardar mi información para pagos más rápidos
+              </label>
+
+              <button type="submit" class="pay-btn" id="pay-btn">
+                <span class="pay-btn-label">
+                  Pagar <span id="pay-btn-amount">$95.23</span>
+                </span>
+                <span class="pay-btn-spinner" aria-hidden="true"></span>
+              </button>
+
+              <p class="fineprint">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V5L12 2Z" stroke="currentColor" stroke-width="1.8"/></svg>
+                Pagos protegidos con cifrado SSL de 256 bits · potenciado por Stripe
+              </p>
+            </form>
+
+            <div class="success-overlay" id="success-overlay" hidden>
+              <div class="success-check">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0B0F14" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <h2>¡Pago confirmado!</h2>
+              <p>Tu pedido <strong id="order-id"></strong> fue procesado correctamente.<br>Enviamos la confirmación a tu correo.</p>
+              <button type="button" class="ghost-btn" id="reset-btn">Hacer otro pedido</button>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ADD-TO-ORDER TOAST ============ -->
+  <div class="add-toast" id="add-toast" hidden>
+    <span id="add-toast-text">Producto añadido a tu pedido</span>
+    <a href="#checkout" class="add-toast-btn">Ir al pago →</a>
+  </div>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#inicio">
+          <span class="brand-mark">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L21 6.5V12C21 16.97 17.4 21.44 12 22.9C6.6 21.44 3 16.97 3 12V6.5L12 2Z" stroke="url(#footg1)" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M12 8V16M8 12H16" stroke="url(#footg1)" stroke-width="1.6" stroke-linecap="round"/>
+              <defs><linearGradient id="footg1" x1="3" y1="2" x2="21" y2="22"><stop stop-color="#5EEAD4"/><stop offset="1" stop-color="#818CF8"/></linearGradient></defs>
+            </svg>
+          </span>
+          NexaPharm
+        </a>
+        <p>Ciencia celular, resultados reales. Suplementos y péptidos formulados con precisión clínica desde 2019.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M14 3v11.5a3.5 3.5 0 11-3.5-3.5c.35 0 .68.05 1 .14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M14 3c.3 2.2 2 4 4.5 4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+          <a href="#" aria-label="X"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Tienda</h4>
+        <a href="#suplementos">Suplementos</a>
+        <a href="#peptidos">Péptidos</a>
+        <a href="#formula">Fórmula destacada</a>
+        <a href="#checkout">Checkout</a>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <a href="#ciencia">Nuestra ciencia</a>
+        <a href="#resenas">Reseñas</a>
+        <a href="#faq">Preguntas frecuentes</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <a href="#faq">Envíos y devoluciones</a>
+        <a href="#faq">Cancelar suscripción</a>
+        <a href="#faq">Contacto</a>
+      </div>
+      <div class="footer-col footer-newsletter">
+        <h4>Novedades</h4>
+        <p>Recibe lanzamientos y hallazgos de investigación una vez al mes.</p>
+        <form class="newsletter-form" onsubmit="return false;">
+          <input type="email" placeholder="tucorreo@ejemplo.com" aria-label="Correo electrónico">
+          <button type="submit">Unirme</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="footer-legal">
+      <p>Estas declaraciones no han sido evaluadas por la FDA. Estos productos no están destinados a diagnosticar, tratar, curar ni prevenir ninguna enfermedad. Consulta a tu médico antes de iniciar cualquier programa de suplementación. Este sitio es una maqueta de demostración con fines de diseño; los testimonios son ilustrativos.</p>
+      <p>© 2026 NexaPharm Labs. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+<script src="script.js"></script>
+</body>
+</html>
