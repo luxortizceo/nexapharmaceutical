@@ -7,8 +7,8 @@
   const fmt = (n) => `$${n.toFixed(2)}`;
 
   const LABELS = {
-    renew: 'RENEW', omega: 'OMEGA+', magnesium: 'MAG', d3k2: 'D3+K2',
-    collagen: 'COLLAGEN', marine: 'MARINE', nad: 'NAD+', recovery: 'RECOVERY',
+    creatina: 'CREATINA', preworkout: 'PRE-WKT', magnesium: 'MAG', d3k2: 'D3+K2',
+    collagen: 'COLLAGEN', marine: 'MARINE', nad: 'NAD+', recovery: 'RECOVERY', secret: 'SECRET',
   };
 
   const TAX_RATE = 0.07;
