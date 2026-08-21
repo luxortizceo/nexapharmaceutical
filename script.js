@@ -12,10 +12,10 @@
   };
 
   const TAX_RATE = 0.07;
+  const SHIPPING = 150.00;
 
   const state = {
-    product: { id: 'renew', name: 'NexaPharm® Renew', sub: 'Complejo avanzado de salud celular — fórmula clínica, 90 cápsulas', eyebrow: 'Compra única · Envío prioritario', price: 89.00, icon: 'bottle' },
-    plan: 'onetime',
+    cart: [], // { id, name, sub, price, qty, icon }
     discount: 0,
     promoCode: '',
   };
@@ -34,7 +34,7 @@
     }));
   }
 
-  // ---------- Product visuals ----------
+  // ---------- Product icon svgs ----------
   function bottleSvg(label) {
     return `<svg viewBox="0 0 120 160" class="bottle" width="88" height="118">
       <defs>
@@ -67,43 +67,113 @@
     </svg>`;
   }
 
-  const coVisual = $('#co-visual');
-  const coEyebrow = $('#co-eyebrow');
-  const coName = $('#co-name');
-  const coSub = $('#co-sub');
-  const planOnetimePrice = $('#plan-onetime-price');
-  const planSubscribePrice = $('#plan-subscribe-price');
+  function iconFor(item) {
+    const label = LABELS[item.id] || 'NEXA';
+    return item.icon === 'pouch' ? pouchSvg(label) : bottleSvg(label);
+  }
 
-  function applyProductToCheckout(highlight) {
-    const p = state.product;
-    const label = LABELS[p.id] || 'NEXA';
-    coVisual.innerHTML = `<div class="visual-glow"></div>${p.icon === 'pouch' ? pouchSvg(label) : bottleSvg(label)}`;
-    coEyebrow.textContent = p.eyebrow;
-    coName.textContent = p.name;
-    coSub.textContent = p.sub;
-    planOnetimePrice.textContent = fmt(p.price);
-    planSubscribePrice.textContent = fmt(p.price * 0.8);
-    recalc();
-    if (highlight) {
-      const card = $('.glass-card');
-      card.classList.remove('is-flash');
-      void card.offsetWidth;
-      card.classList.add('is-flash');
+  // ---------- Cart state ----------
+  function addToCart(item) {
+    const existing = state.cart.find((l) => l.id === item.id);
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      state.cart.push({ ...item, qty: 1 });
     }
   }
 
+  function changeQty(id, delta) {
+    const line = state.cart.find((l) => l.id === id);
+    if (!line) return;
+    line.qty += delta;
+    if (line.qty <= 0) state.cart = state.cart.filter((l) => l.id !== id);
+    renderCart();
+  }
+
+  function removeLine(id) {
+    state.cart = state.cart.filter((l) => l.id !== id);
+    renderCart();
+  }
+
+  function cartCount() {
+    return state.cart.reduce((sum, l) => sum + l.qty, 0);
+  }
+
+  function cartSubtotal() {
+    return state.cart.reduce((sum, l) => sum + l.price * l.qty, 0);
+  }
+
+  // ---------- Rendering ----------
+  const cartFabBadge = $('#cart-fab-badge');
+  const cartLinesEl = $('#cart-lines');
+  const cartEmptyEl = $('#cart-empty');
+  const cartSummaryEl = $('#cart-summary');
+
+  function renderCart() {
+    const count = cartCount();
+    cartFabBadge.textContent = String(count);
+    cartFabBadge.hidden = count === 0;
+
+    if (state.cart.length === 0) {
+      cartEmptyEl.hidden = false;
+      cartLinesEl.hidden = true;
+      cartSummaryEl.hidden = true;
+      cartLinesEl.innerHTML = '';
+    } else {
+      cartEmptyEl.hidden = true;
+      cartLinesEl.hidden = false;
+      cartSummaryEl.hidden = false;
+      cartLinesEl.innerHTML = state.cart.map((line) => `
+        <div class="cart-line" data-line="${line.id}">
+          <div class="cart-line-visual">${iconFor(line)}</div>
+          <div class="cart-line-info">
+            <h4>${line.name}</h4>
+            <span>${line.sub}</span>
+            <div class="cart-line-price">${fmt(line.price * line.qty)}</div>
+          </div>
+          <div class="cart-line-side">
+            <button type="button" class="cart-line-remove" data-remove="${line.id}" aria-label="Quitar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </button>
+            <div class="cart-line-qty">
+              <button type="button" class="qty-btn" data-qty-delta="-1" data-qty-id="${line.id}" aria-label="Restar">−</button>
+              <span class="qty-value">${line.qty}</span>
+              <button type="button" class="qty-btn" data-qty-delta="1" data-qty-id="${line.id}" aria-label="Sumar">+</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    recalc();
+  }
+
+  cartLinesEl.addEventListener('click', (e) => {
+    const qtyBtn = e.target.closest('[data-qty-id]');
+    if (qtyBtn) {
+      changeQty(qtyBtn.dataset.qtyId, parseInt(qtyBtn.dataset.qtyDelta, 10));
+      return;
+    }
+    const removeBtn = e.target.closest('[data-remove]');
+    if (removeBtn) removeLine(removeBtn.dataset.remove);
+  });
+
   // ---------- Pricing ----------
   function recalc() {
-    const planPrice = state.plan === 'subscribe' ? state.product.price * 0.8 : state.product.price;
-    const discountAmount = planPrice * state.discount;
-    const taxable = planPrice - discountAmount;
+    const subtotal = cartSubtotal();
+    const discountAmount = subtotal * state.discount;
+    const shipping = state.cart.length ? SHIPPING : 0;
+    const taxable = subtotal - discountAmount;
     const tax = taxable * TAX_RATE;
-    const total = taxable + tax;
+    const total = taxable + tax + shipping;
 
-    $('#row-subtotal').textContent = fmt(planPrice);
+    $('#row-subtotal').textContent = fmt(subtotal);
+    $('#row-shipping').textContent = fmt(shipping);
     $('#row-tax').textContent = fmt(tax);
     $('#row-total').textContent = fmt(total);
     $('#pay-btn-amount').textContent = fmt(total);
+    $('#payment-recap-total').textContent = fmt(total);
+    const count = cartCount();
+    $('#payment-recap-count').textContent = `${count} artículo${count === 1 ? '' : 's'}`;
 
     const discountWrap = $('#row-discount-wrap');
     if (state.discount > 0) {
@@ -115,46 +185,56 @@
     }
   }
 
-  $$('input[name="plan"]').forEach((input) => {
-    input.addEventListener('change', (e) => {
-      state.plan = e.target.value;
-      recalc();
-    });
-  });
+  // ---------- Drawer open/close ----------
+  const cartFab = $('#cart-fab');
+  const cartOverlay = $('#cart-overlay');
+  const cartDrawer = $('#cart-drawer');
+  const cartClose = $('#cart-close');
+  const cartBack = $('#cart-back');
+  const cartView = $('#cart-view');
+  const paymentView = $('#payment-view');
+  const drawerTitle = $('#cart-drawer-title');
 
-  // ---------- Add to order ----------
-  const toast = $('#add-toast');
-  const toastText = $('#add-toast-text');
-  let toastTimer = null;
-
-  function showToast(name) {
-    toastText.textContent = `${name} añadido a tu pedido`;
-    toast.hidden = false;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { toast.hidden = true; }, 4000);
+  function openCart() {
+    cartOverlay.classList.add('is-open');
+    cartDrawer.classList.add('is-open');
+    cartDrawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
   }
 
-  $$('.btn-add').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const source = btn.closest('[data-id]');
-      if (!source) return;
-      state.product = {
-        id: source.dataset.id,
-        name: source.dataset.name,
-        sub: source.dataset.sub,
-        eyebrow: source.dataset.eyebrow || 'Compra única · Envío prioritario',
-        price: parseFloat(source.dataset.price),
-        icon: source.dataset.icon || 'bottle',
-      };
-      state.plan = 'onetime';
-      $$('input[name="plan"]').forEach((r) => { r.checked = r.value === 'onetime'; });
-      applyProductToCheckout(true);
-      showToast(state.product.name);
+  function closeCart() {
+    cartOverlay.classList.remove('is-open');
+    cartDrawer.classList.remove('is-open');
+    cartDrawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
 
-      $$('.btn-add').forEach((b) => b.classList.remove('is-added'));
-      btn.classList.add('is-added');
-      setTimeout(() => btn.classList.remove('is-added'), 1200);
-    });
+  function showPaymentView() {
+    cartView.hidden = true;
+    paymentView.hidden = false;
+    cartBack.hidden = false;
+    drawerTitle.textContent = 'Pago seguro';
+  }
+
+  function showCartView() {
+    paymentView.hidden = true;
+    cartView.hidden = false;
+    cartBack.hidden = true;
+    drawerTitle.textContent = 'Tu carrito';
+  }
+
+  $$('[data-open-cart]').forEach((el) => el.addEventListener('click', openCart));
+  $$('[data-close-cart]').forEach((el) => el.addEventListener('click', closeCart));
+  cartClose.addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+  cartBack.addEventListener('click', showCartView);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cartDrawer.classList.contains('is-open')) closeCart();
+  });
+
+  $('#checkout-btn').addEventListener('click', () => {
+    if (!state.cart.length) return;
+    showPaymentView();
   });
 
   // ---------- Promo code ----------
@@ -174,6 +254,42 @@
       msg.classList.add('is-error');
     }
     recalc();
+  });
+
+  // ---------- Add to cart (product grid + formula CTA) ----------
+  const toast = $('#add-toast');
+  const toastText = $('#add-toast-text');
+  let toastTimer = null;
+
+  function showToast(name) {
+    toastText.textContent = `${name} añadido a tu carrito`;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { toast.hidden = true; }, 4000);
+  }
+
+  $$('.btn-add').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const source = btn.closest('[data-id]');
+      if (!source) return;
+      addToCart({
+        id: source.dataset.id,
+        name: source.dataset.name,
+        sub: source.dataset.sub,
+        price: parseFloat(source.dataset.price),
+        icon: source.dataset.icon || 'bottle',
+      });
+      renderCart();
+      showToast(source.dataset.name);
+
+      cartFab.classList.remove('is-bump');
+      void cartFab.offsetWidth;
+      cartFab.classList.add('is-bump');
+
+      $$('.btn-add').forEach((b) => b.classList.remove('is-added'));
+      btn.classList.add('is-added');
+      setTimeout(() => btn.classList.remove('is-added'), 1200);
+    });
   });
 
   // ---------- Card visual + formatting ----------
@@ -357,6 +473,9 @@
       const orderId = '#NX-' + Math.floor(100000 + Math.random() * 900000);
       $('#order-id').textContent = orderId;
       successOverlay.hidden = false;
+      state.cart = [];
+      state.discount = 0;
+      renderCart();
     }, 1600);
   }
 
@@ -368,10 +487,10 @@
     previewExpiry.textContent = 'MM/YY';
     previewCvc.textContent = '•••';
     brandIcon.innerHTML = brandSvg('generic');
-    state.discount = 0;
     $('#promo-msg').textContent = '';
     $('#promo-input').value = '';
-    recalc();
+    showCartView();
+    closeCart();
   });
 
   // ---------- Subtle parallax on orbs ----------
@@ -384,5 +503,5 @@
     });
   });
 
-  recalc();
+  renderCart();
 })();

@@ -473,266 +473,208 @@
     </div>
   </section>
 
-  <!-- ============ CHECKOUT ============ -->
-  <section class="checkout-section" id="checkout">
-    <div class="bg-cinematic" aria-hidden="true">
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-      <div class="beam"></div>
-      <div class="grain"></div>
-      <div class="vignette"></div>
+  <!-- ============ ADD-TO-ORDER TOAST ============ -->
+  <div class="add-toast" id="add-toast" hidden>
+    <span id="add-toast-text">Producto añadido a tu carrito</span>
+    <button type="button" class="add-toast-btn" data-open-cart>Ver carrito →</button>
+  </div>
+
+  <!-- ============ FLOATING CART ============ -->
+  <button type="button" class="cart-fab" id="cart-fab" aria-label="Abrir carrito" data-open-cart>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a2 2 0 002 1.8h8.2a2 2 0 002-1.8L20 8H6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="21" r="1.6" fill="currentColor"/><circle cx="18" cy="21" r="1.6" fill="currentColor"/></svg>
+    <span class="cart-fab-badge" id="cart-fab-badge" hidden>0</span>
+  </button>
+
+  <div class="cart-overlay" id="cart-overlay"></div>
+
+  <aside class="cart-drawer" id="cart-drawer" aria-hidden="true">
+    <div class="cart-drawer-header">
+      <button type="button" class="cart-back" id="cart-back" hidden aria-label="Volver al carrito">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <h2 id="cart-drawer-title">Tu carrito</h2>
+      <button type="button" class="cart-close" id="cart-close" aria-label="Cerrar carrito">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
 
-    <div class="checkout-page">
-      <div class="checkout-topbar">
-        <span class="section-eyebrow">Finalizar compra</span>
-        <div class="secure-badge">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V5L12 2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Conexión cifrada de extremo a extremo
+    <!-- CART VIEW -->
+    <div class="cart-view" id="cart-view">
+      <div class="cart-empty" id="cart-empty">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M3 4h2l2.4 12.2a2 2 0 002 1.8h8.2a2 2 0 002-1.8L20 8H6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>Tu carrito está vacío</p>
+        <a href="#catalogo" class="btn-secondary btn-secondary-dark" data-close-cart>Ver catálogo</a>
+      </div>
+
+      <div class="cart-lines" id="cart-lines"></div>
+
+      <div class="cart-summary" id="cart-summary" hidden>
+        <div class="promo-row">
+          <input type="text" id="promo-input" placeholder="Código de descuento" autocomplete="off">
+          <button type="button" id="promo-apply">Aplicar</button>
+        </div>
+        <p class="promo-msg" id="promo-msg"></p>
+
+        <div class="price-breakdown">
+          <div class="price-row"><span>Subtotal</span><span id="row-subtotal">$0.00</span></div>
+          <div class="price-row" id="row-discount-wrap" hidden><span>Descuento <span id="promo-tag"></span></span><span id="row-discount" class="text-accent">−$0.00</span></div>
+          <div class="price-row"><span>Envío</span><span id="row-shipping">$150.00</span></div>
+          <div class="price-row"><span>Impuestos estimados</span><span id="row-tax">$0.00</span></div>
+          <div class="price-divider"></div>
+          <div class="price-row price-total"><span>Total</span><span id="row-total">$0.00</span></div>
+        </div>
+
+        <button type="button" class="pay-btn" id="checkout-btn">
+          <span class="pay-btn-label">Proceder al pago</span>
+        </button>
+        <p class="fineprint">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V5L12 2Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          Pago seguro con cifrado SSL de 256 bits
+        </p>
+      </div>
+    </div>
+
+    <!-- PAYMENT VIEW -->
+    <div class="payment-view" id="payment-view" hidden>
+      <div class="payment-recap">
+        <span id="payment-recap-count">0 artículos</span>
+        <span id="payment-recap-total">$0.00</span>
+      </div>
+
+      <div class="card-visual-wrap">
+        <div class="card3d" id="card3d">
+          <div class="card-face card-front">
+            <div class="card-top">
+              <div class="chip"></div>
+              <div class="card-scheme" id="scheme-badge">
+                <span class="scheme-dot dot-a"></span><span class="scheme-dot dot-b"></span>
+              </div>
+            </div>
+            <div class="card-number" id="card-preview-number">•••• •••• •••• ••••</div>
+            <div class="card-bottom">
+              <div class="card-holder">
+                <label>Titular</label>
+                <span id="card-preview-name">NOMBRE APELLIDO</span>
+              </div>
+              <div class="card-expiry">
+                <label>Vence</label>
+                <span id="card-preview-expiry">MM/YY</span>
+              </div>
+            </div>
+            <div class="card-shine"></div>
+          </div>
+          <div class="card-face card-back">
+            <div class="magnetic-strip"></div>
+            <div class="signature-row">
+              <div class="signature-strip"></div>
+              <div class="cvc-box" id="card-preview-cvc">•••</div>
+            </div>
+            <div class="card-shine"></div>
+          </div>
         </div>
       </div>
 
-      <div class="checkout-grid">
+      <form id="checkout-form" novalidate>
+        <div class="field">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
+          <span class="field-error" data-for="email"></span>
+        </div>
 
-        <!-- LEFT: ORDER SUMMARY -->
-        <section class="summary-panel">
-          <div class="product-card">
-            <div class="product-visual" id="co-visual">
-              <div class="visual-glow"></div>
-              <svg viewBox="0 0 120 160" class="bottle" width="88" height="118">
-                <defs>
-                  <linearGradient id="bottleGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stop-color="#a7f3d0"/><stop offset="55%" stop-color="#5eead4"/><stop offset="100%" stop-color="#6366f1"/>
-                  </linearGradient>
-                  <linearGradient id="capGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#94a3b8"/>
-                  </linearGradient>
-                </defs>
-                <rect x="38" y="10" width="44" height="22" rx="4" fill="url(#capGrad)"/>
-                <rect x="42" y="4" width="36" height="10" rx="3" fill="#cbd5e1"/>
-                <path d="M32 32h56c6 0 10 5 10 12v96c0 8-6 14-14 14H36c-8 0-14-6-14-14V44c0-7 4-12 10-12z" fill="url(#bottleGrad)" opacity="0.95"/>
-                <rect x="24" y="76" width="72" height="46" rx="6" fill="rgba(6,10,18,0.55)"/>
-                <text x="60" y="97" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="700" fill="#f8fafc" id="co-visual-label1">NEXA</text>
-                <text x="60" y="110" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-size="7" fill="#cbd5e1" letter-spacing="1" id="co-visual-label2">RENEW · 90ct</text>
-              </svg>
-            </div>
-            <div class="product-info">
-              <span class="eyebrow" id="co-eyebrow">Compra única · Envío prioritario</span>
-              <h1 id="co-name">NexaPharm<sup>®</sup> Renew</h1>
-              <p class="product-sub" id="co-sub">Complejo avanzado de salud celular — fórmula clínica, 90 cápsulas</p>
-              <div class="rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-count">4.9 · 2,340 reseñas verificadas</span>
-              </div>
-            </div>
+        <div class="express-row">
+          <button type="button" class="express-btn apple-pay" data-express="Apple Pay">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.7 1c.1 1.1-.3 2.2-1 3-.7.8-1.8 1.5-2.9 1.4-.1-1.1.4-2.2 1-3 .8-.8 2-1.4 2.9-1.4zM19.9 17.3c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.7-.9-1.9 0-2.4.9-3.7.9-1.6 0-2.8-1.5-3.7-2.9C1.4 17 .6 12.4 2.4 9.3c.9-1.6 2.5-2.6 4.2-2.6 1.5 0 2.5 1 3.7 1 1.2 0 2-.9 3.7-.9 1.4 0 2.9.8 3.8 2.1-3.3 1.8-2.8 6.6.1 8.4z"/></svg>
+            Apple Pay
+          </button>
+          <button type="button" class="express-btn google-pay" data-express="Google Pay">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 11v2.9h4.1c-.2 1-1.4 3-4.1 3-2.5 0-4.5-2-4.5-4.5S9.5 7.9 12 7.9c1.4 0 2.4.6 2.9 1.1l2-1.9C15.6 5.9 14 5.2 12 5.2c-3.7 0-6.8 3-6.8 6.8s3.1 6.8 6.8 6.8c3.9 0 6.5-2.7 6.5-6.6 0-.4 0-.8-.1-1.2H12z"/></svg>
+            Google Pay
+          </button>
+          <button type="button" class="express-btn link-pay" data-express="Link">
+            <span class="link-dot">•</span> link
+          </button>
+        </div>
+
+        <div class="divider"><span>o paga con tarjeta</span></div>
+
+        <div class="field">
+          <label for="cardNumber">Número de tarjeta</label>
+          <div class="input-with-icon">
+            <input type="text" id="cardNumber" inputmode="numeric" placeholder="1234 1234 1234 1234" autocomplete="cc-number" maxlength="23" required>
+            <span class="card-brand-icon" id="brand-icon">
+              <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="2.5" fill="#2A3344"/></svg>
+            </span>
           </div>
+          <span class="field-error" data-for="cardNumber"></span>
+        </div>
 
-          <div class="plan-toggle" role="radiogroup" aria-label="Frecuencia de compra">
-            <label class="plan-option">
-              <input type="radio" name="plan" value="onetime" checked>
-              <div class="plan-body">
-                <div class="plan-title">Compra única</div>
-                <div class="plan-desc">Sin compromiso</div>
-              </div>
-              <div class="plan-price" id="plan-onetime-price">$89.00</div>
-            </label>
-            <label class="plan-option is-recommended">
-              <input type="radio" name="plan" value="subscribe">
-              <div class="plan-body">
-                <div class="plan-title">Suscríbete y ahorra 20%</div>
-                <div class="plan-desc">Envío gratis cada mes · cancela cuando quieras</div>
-              </div>
-              <div class="plan-price" id="plan-subscribe-price">$71.20</div>
-            </label>
+        <div class="field-row">
+          <div class="field">
+            <label for="expiry">Vencimiento</label>
+            <input type="text" id="expiry" inputmode="numeric" placeholder="MM/YY" autocomplete="cc-exp" maxlength="5" required>
+            <span class="field-error" data-for="expiry"></span>
           </div>
-
-          <div class="price-breakdown">
-            <div class="price-row">
-              <span>Subtotal</span>
-              <span id="row-subtotal">$89.00</span>
-            </div>
-            <div class="price-row">
-              <span>Envío</span>
-              <span id="row-shipping" class="text-accent">Gratis</span>
-            </div>
-            <div class="price-row" id="row-discount-wrap" hidden>
-              <span>Descuento <span id="promo-tag"></span></span>
-              <span id="row-discount" class="text-accent">−$0.00</span>
-            </div>
-            <div class="price-row">
-              <span>Impuestos estimados</span>
-              <span id="row-tax">$6.23</span>
-            </div>
-            <div class="price-divider"></div>
-            <div class="price-row price-total">
-              <span>Total</span>
-              <span id="row-total">$95.23</span>
-            </div>
+          <div class="field">
+            <label for="cvc">CVC</label>
+            <input type="text" id="cvc" inputmode="numeric" placeholder="123" autocomplete="cc-csc" maxlength="4" required>
+            <span class="field-error" data-for="cvc"></span>
           </div>
+        </div>
 
-          <div class="promo-row">
-            <input type="text" id="promo-input" placeholder="Código de descuento" autocomplete="off">
-            <button type="button" id="promo-apply">Aplicar</button>
+        <div class="field">
+          <label for="cardName">Nombre en la tarjeta</label>
+          <input type="text" id="cardName" placeholder="Nombre completo" autocomplete="cc-name" required>
+          <span class="field-error" data-for="cardName"></span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="country">País</label>
+            <select id="country" autocomplete="country">
+              <option value="MX">México</option>
+              <option value="US">Estados Unidos</option>
+              <option value="CO">Colombia</option>
+              <option value="AR">Argentina</option>
+              <option value="ES">España</option>
+              <option value="CL">Chile</option>
+              <option value="PE">Perú</option>
+            </select>
           </div>
-          <p class="promo-msg" id="promo-msg"></p>
-
-          <ul class="trust-list">
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Certificado GMP &amp; probado por terceros</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Garantía de devolución de 60 días</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Envío discreto en 24–48h</li>
-          </ul>
-        </section>
-
-        <!-- RIGHT: PAYMENT -->
-        <section class="payment-panel">
-          <div class="glass-card">
-
-            <div class="card-visual-wrap">
-              <div class="card3d" id="card3d">
-                <div class="card-face card-front">
-                  <div class="card-top">
-                    <div class="chip"></div>
-                    <div class="card-scheme" id="scheme-badge">
-                      <span class="scheme-dot dot-a"></span><span class="scheme-dot dot-b"></span>
-                    </div>
-                  </div>
-                  <div class="card-number" id="card-preview-number">•••• •••• •••• ••••</div>
-                  <div class="card-bottom">
-                    <div class="card-holder">
-                      <label>Titular</label>
-                      <span id="card-preview-name">NOMBRE APELLIDO</span>
-                    </div>
-                    <div class="card-expiry">
-                      <label>Vence</label>
-                      <span id="card-preview-expiry">MM/YY</span>
-                    </div>
-                  </div>
-                  <div class="card-shine"></div>
-                </div>
-                <div class="card-face card-back">
-                  <div class="magnetic-strip"></div>
-                  <div class="signature-row">
-                    <div class="signature-strip"></div>
-                    <div class="cvc-box" id="card-preview-cvc">•••</div>
-                  </div>
-                  <div class="card-shine"></div>
-                </div>
-              </div>
-            </div>
-
-            <form id="checkout-form" novalidate>
-              <div class="field">
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" placeholder="tucorreo@ejemplo.com" autocomplete="email" required>
-                <span class="field-error" data-for="email"></span>
-              </div>
-
-              <div class="express-row">
-                <button type="button" class="express-btn apple-pay" data-express="Apple Pay">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.7 1c.1 1.1-.3 2.2-1 3-.7.8-1.8 1.5-2.9 1.4-.1-1.1.4-2.2 1-3 .8-.8 2-1.4 2.9-1.4zM19.9 17.3c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.7-.9-1.9 0-2.4.9-3.7.9-1.6 0-2.8-1.5-3.7-2.9C1.4 17 .6 12.4 2.4 9.3c.9-1.6 2.5-2.6 4.2-2.6 1.5 0 2.5 1 3.7 1 1.2 0 2-.9 3.7-.9 1.4 0 2.9.8 3.8 2.1-3.3 1.8-2.8 6.6.1 8.4z"/></svg>
-                  Apple Pay
-                </button>
-                <button type="button" class="express-btn google-pay" data-express="Google Pay">
-                  <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 11v2.9h4.1c-.2 1-1.4 3-4.1 3-2.5 0-4.5-2-4.5-4.5S9.5 7.9 12 7.9c1.4 0 2.4.6 2.9 1.1l2-1.9C15.6 5.9 14 5.2 12 5.2c-3.7 0-6.8 3-6.8 6.8s3.1 6.8 6.8 6.8c3.9 0 6.5-2.7 6.5-6.6 0-.4 0-.8-.1-1.2H12z"/></svg>
-                  Google Pay
-                </button>
-                <button type="button" class="express-btn link-pay" data-express="Link">
-                  <span class="link-dot">•</span> link
-                </button>
-              </div>
-
-              <div class="divider"><span>o paga con tarjeta</span></div>
-
-              <div class="field">
-                <label for="cardNumber">Número de tarjeta</label>
-                <div class="input-with-icon">
-                  <input type="text" id="cardNumber" inputmode="numeric" placeholder="1234 1234 1234 1234" autocomplete="cc-number" maxlength="23" required>
-                  <span class="card-brand-icon" id="brand-icon">
-                    <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="2.5" fill="#2A3344"/></svg>
-                  </span>
-                </div>
-                <span class="field-error" data-for="cardNumber"></span>
-              </div>
-
-              <div class="field-row">
-                <div class="field">
-                  <label for="expiry">Vencimiento</label>
-                  <input type="text" id="expiry" inputmode="numeric" placeholder="MM/YY" autocomplete="cc-exp" maxlength="5" required>
-                  <span class="field-error" data-for="expiry"></span>
-                </div>
-                <div class="field">
-                  <label for="cvc">CVC</label>
-                  <input type="text" id="cvc" inputmode="numeric" placeholder="123" autocomplete="cc-csc" maxlength="4" required>
-                  <span class="field-error" data-for="cvc"></span>
-                </div>
-              </div>
-
-              <div class="field">
-                <label for="cardName">Nombre en la tarjeta</label>
-                <input type="text" id="cardName" placeholder="Nombre completo" autocomplete="cc-name" required>
-                <span class="field-error" data-for="cardName"></span>
-              </div>
-
-              <div class="field-row">
-                <div class="field">
-                  <label for="country">País</label>
-                  <select id="country" autocomplete="country">
-                    <option value="US">Estados Unidos</option>
-                    <option value="MX">México</option>
-                    <option value="CO">Colombia</option>
-                    <option value="AR">Argentina</option>
-                    <option value="ES">España</option>
-                    <option value="CL">Chile</option>
-                    <option value="PE">Perú</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="zip">Código postal</label>
-                  <input type="text" id="zip" inputmode="numeric" placeholder="00000" autocomplete="postal-code" maxlength="10" required>
-                  <span class="field-error" data-for="zip"></span>
-                </div>
-              </div>
-
-              <label class="save-info">
-                <input type="checkbox" checked>
-                Guardar mi información para pagos más rápidos
-              </label>
-
-              <button type="submit" class="pay-btn" id="pay-btn">
-                <span class="pay-btn-label">
-                  Pagar <span id="pay-btn-amount">$95.23</span>
-                </span>
-                <span class="pay-btn-spinner" aria-hidden="true"></span>
-              </button>
-
-              <p class="fineprint">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V5L12 2Z" stroke="currentColor" stroke-width="1.8"/></svg>
-                Pagos protegidos con cifrado SSL de 256 bits · potenciado por Stripe
-              </p>
-            </form>
-
-            <div class="success-overlay" id="success-overlay" hidden>
-              <div class="success-check">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0B0F14" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <h2>¡Pago confirmado!</h2>
-              <p>Tu pedido <strong id="order-id"></strong> fue procesado correctamente.<br>Enviamos la confirmación a tu correo.</p>
-              <button type="button" class="ghost-btn" id="reset-btn">Hacer otro pedido</button>
-            </div>
-
+          <div class="field">
+            <label for="zip">Código postal</label>
+            <input type="text" id="zip" inputmode="numeric" placeholder="00000" autocomplete="postal-code" maxlength="10" required>
+            <span class="field-error" data-for="zip"></span>
           </div>
-        </section>
+        </div>
 
+        <label class="save-info">
+          <input type="checkbox" checked>
+          Guardar mi información para pagos más rápidos
+        </label>
+
+        <button type="submit" class="pay-btn" id="pay-btn">
+          <span class="pay-btn-label">
+            Pagar <span id="pay-btn-amount">$0.00</span>
+          </span>
+          <span class="pay-btn-spinner" aria-hidden="true"></span>
+        </button>
+
+        <p class="fineprint">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5V11C4 16.55 7.84 21.74 12 23C16.16 21.74 20 16.55 20 11V5L12 2Z" stroke="currentColor" stroke-width="1.8"/></svg>
+          Pagos protegidos con cifrado SSL de 256 bits · potenciado por Stripe
+        </p>
+      </form>
+
+      <div class="success-overlay" id="success-overlay" hidden>
+        <div class="success-check">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="#0B0F14" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2>¡Pago confirmado!</h2>
+        <p>Tu pedido <strong id="order-id"></strong> fue procesado correctamente.<br>Enviamos la confirmación a tu correo.</p>
+        <button type="button" class="ghost-btn" id="reset-btn">Hacer otro pedido</button>
       </div>
     </div>
-  </section>
-
-  <!-- ============ ADD-TO-ORDER TOAST ============ -->
-  <div class="add-toast" id="add-toast" hidden>
-    <span id="add-toast-text">Producto añadido a tu pedido</span>
-    <a href="#checkout" class="add-toast-btn">Ir al pago →</a>
-  </div>
+  </aside>
 
   <!-- ============ FOOTER ============ -->
   <footer class="site-footer">
@@ -761,7 +703,7 @@
         <a href="#suplementos">Suplementos</a>
         <a href="#peptidos">Péptidos</a>
         <a href="#formula">Fórmula destacada</a>
-        <a href="#checkout">Checkout</a>
+        <button type="button" class="footer-link-btn" data-open-cart>Carrito</button>
       </div>
       <div class="footer-col">
         <h4>Empresa</h4>
