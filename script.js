@@ -1,6 +1,17 @@
 (() => {
   'use strict';
 
+  // ===== Stripe setup =====
+  // Publishable keys are not secret — safe to leave in this file. Get yours
+  // from https://dashboard.stripe.com/apikeys (use the pk_test_... one while
+  // testing, switch to pk_live_... only once you're ready to take real money).
+  const STRIPE_PUBLISHABLE_KEY = 'pk_test_REPLACE_WITH_YOUR_KEY';
+  // Must match STRIPE_CURRENCY on the server (api/create-payment-intent.js) —
+  // and STORE_COUNTRY should be the two-letter country of your Stripe account,
+  // used only to power the Apple Pay / Google Pay button.
+  const STORE_CURRENCY = 'usd';
+  const STORE_COUNTRY = 'US';
+
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
@@ -158,13 +169,24 @@
   });
 
   // ---------- Pricing ----------
-  function recalc() {
+  function cartTotals() {
     const subtotal = cartSubtotal();
     const discountAmount = subtotal * state.discount;
     const shipping = state.cart.length ? SHIPPING : 0;
     const taxable = subtotal - discountAmount;
     const tax = taxable * TAX_RATE;
-    const total = taxable + tax + shipping;
+    return { subtotal, discountAmount, shipping, tax, total: taxable + tax + shipping };
+  }
+
+  function cartTotal() {
+    return cartTotals().total;
+  }
+
+  function recalc() {
+    const { subtotal, discountAmount, shipping, tax, total } = cartTotals();
+    if (paymentView && !paymentView.hidden) {
+      updatePaymentRequestTotal(total);
+    }
 
     $('#row-subtotal').textContent = fmt(subtotal);
     $('#row-shipping').textContent = fmt(shipping);
@@ -214,6 +236,8 @@
     paymentView.hidden = false;
     cartBack.hidden = false;
     drawerTitle.textContent = 'Pago seguro';
+    ensureStripeElementsMounted();
+    updatePaymentRequestTotal(cartTotal());
   }
 
   function showCartView() {
@@ -292,48 +316,19 @@
     });
   });
 
-  // ---------- Card visual + formatting ----------
-  const cardNumberInput = $('#cardNumber');
-  const expiryInput = $('#expiry');
-  const cvcInput = $('#cvc');
+  // ---------- Card visual (decorative) ----------
   const nameInput = $('#cardName');
-
-  const previewNumber = $('#card-preview-number');
   const previewName = $('#card-preview-name');
-  const previewExpiry = $('#card-preview-expiry');
-  const previewCvc = $('#card-preview-cvc');
   const card3d = $('#card3d');
-  const brandIcon = $('#brand-icon');
 
-  function detectBrand(digits) {
-    if (/^4/.test(digits)) return 'visa';
-    if (/^(5[1-5]|2[2-7])/.test(digits)) return 'mastercard';
-    if (/^3[47]/.test(digits)) return 'amex';
-    if (/^6(011|5)/.test(digits)) return 'discover';
-    return 'generic';
-  }
-
-  function groupsFor(brand) {
-    return brand === 'amex' ? [4, 6, 5] : [4, 4, 4, 4];
-  }
-
-  function formatCardNumber(digits, brand) {
-    const groups = groupsFor(brand);
-    let out = [];
-    let idx = 0;
-    for (const g of groups) {
-      const chunk = digits.slice(idx, idx + g);
-      if (!chunk) break;
-      out.push(chunk);
-      idx += g;
-    }
-    return out.join(' ');
-  }
+  nameInput.addEventListener('input', (e) => {
+    previewName.textContent = e.target.value.trim() ? e.target.value.toUpperCase() : 'NOMBRE APELLIDO';
+  });
 
   function brandSvg(brand) {
     const label = {
-      visa: 'VISA', mastercard: '', amex: 'AMEX', discover: 'DISC', generic: ''
-    }[brand];
+      visa: 'VISA', mastercard: '', amex: 'AMEX', discover: 'DISC', unknown: ''
+    }[brand] ?? '';
     if (brand === 'mastercard') {
       return `<svg width="26" height="16" viewBox="0 0 26 16"><circle cx="9" cy="8" r="7" fill="#5eead4" opacity=".9"/><circle cx="17" cy="8" r="7" fill="#818cf8" opacity=".85"/></svg>`;
     }
@@ -343,57 +338,125 @@
     return `<svg width="40" height="16" viewBox="0 0 40 16"><rect width="40" height="16" rx="3" fill="#1c2333"/><text x="20" y="11.5" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="7.5" font-weight="700" fill="#5eead4" letter-spacing="0.5">${label}</text></svg>`;
   }
 
-  cardNumberInput.addEventListener('input', (e) => {
-    const digits = e.target.value.replace(/\D/g, '').slice(0, 16);
-    const brand = detectBrand(digits);
-    e.target.value = formatCardNumber(digits, brand);
-    brandIcon.innerHTML = brandSvg(brand);
-    previewNumber.textContent = buildMaskedPreview(digits, brand);
-  });
+  // ===== Stripe Elements (real, PCI-compliant card fields) =====
+  // Stripe owns the card number / expiry / CVC digits from here on — they
+  // live inside Stripe's own iframes, this page never sees or stores them.
+  const stripe = (typeof Stripe === 'function')
+    ? Stripe(STRIPE_PUBLISHABLE_KEY)
+    : null;
+  if (!stripe) console.warn('Stripe.js no cargó — revisa tu conexión o bloqueadores de anuncios.');
 
-  function buildMaskedPreview(digits, brand) {
-    const groups = groupsFor(brand);
-    let idx = 0;
-    const parts = [];
-    groups.forEach((g, gi) => {
-      const chunk = digits.slice(idx, idx + g);
-      const isLast = gi === groups.length - 1;
-      if (chunk.length === 0) {
-        parts.push('•'.repeat(g));
-      } else if (chunk.length < g) {
-        parts.push(chunk.padEnd(g, '•'));
+  const stripeElementStyle = {
+    base: {
+      fontSize: '15px',
+      color: '#0f1420',
+      fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
+      '::placeholder': { color: '#a4abb8' },
+    },
+    invalid: { color: '#f87171' },
+  };
+
+  let elements = null;
+  let cardNumberElement = null;
+  let cardExpiryElement = null;
+  let cardCvcElement = null;
+  let paymentRequest = null;
+  let prButton = null;
+  let stripeReady = false;
+  const fieldComplete = { cardNumber: false, cardExpiry: false, cardCvc: false };
+
+  function wireStripeFieldErrors(element, mountId) {
+    element.on('change', (event) => {
+      fieldComplete[mountId] = event.complete;
+      const errorEl = $(`#${mountId}-errors`);
+      const mountEl = $(`#${mountId}`);
+      if (event.error) {
+        errorEl.textContent = event.error.message;
+        mountEl.classList.add('is-invalid');
       } else {
-        parts.push(isLast || digits.length <= idx + g ? chunk : '•'.repeat(g));
+        errorEl.textContent = '';
+        mountEl.classList.remove('is-invalid');
       }
-      idx += g;
+      if (mountId === 'cardNumber' && event.brand) {
+        $('#scheme-badge').innerHTML = brandSvg(event.brand === 'unknown' ? 'generic' : event.brand);
+      }
     });
-    return parts.join(' ');
   }
 
-  expiryInput.addEventListener('input', (e) => {
-    let v = e.target.value.replace(/\D/g, '').slice(0, 4);
-    if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
-    e.target.value = v;
-    previewExpiry.textContent = v || 'MM/YY';
-  });
+  function ensureStripeElementsMounted() {
+    if (stripeReady || !stripe) return;
+    elements = stripe.elements({ locale: 'es' });
 
-  cvcInput.addEventListener('input', (e) => {
-    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
-    previewCvc.textContent = e.target.value.padEnd(3, '•') || '•••';
-  });
-  cvcInput.addEventListener('focus', () => card3d.classList.add('is-flipped'));
-  cvcInput.addEventListener('blur', () => card3d.classList.remove('is-flipped'));
+    cardNumberElement = elements.create('cardNumber', { style: stripeElementStyle, placeholder: '1234 1234 1234 1234' });
+    cardNumberElement.mount('#cardNumber');
+    wireStripeFieldErrors(cardNumberElement, 'cardNumber');
 
-  nameInput.addEventListener('input', (e) => {
-    previewName.textContent = e.target.value.trim() ? e.target.value.toUpperCase() : 'NOMBRE APELLIDO';
-  });
+    cardExpiryElement = elements.create('cardExpiry', { style: stripeElementStyle });
+    cardExpiryElement.mount('#cardExpiry');
+    wireStripeFieldErrors(cardExpiryElement, 'cardExpiry');
 
-  // ---------- Express pay buttons ----------
-  $$('.express-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      runPaymentFlow();
+    cardCvcElement = elements.create('cardCvc', { style: stripeElementStyle });
+    cardCvcElement.mount('#cardCvc');
+    wireStripeFieldErrors(cardCvcElement, 'cardCvc');
+    cardCvcElement.on('focus', () => card3d.classList.add('is-flipped'));
+    cardCvcElement.on('blur', () => card3d.classList.remove('is-flipped'));
+
+    setUpPaymentRequestButton();
+    stripeReady = true;
+  }
+
+  function setUpPaymentRequestButton() {
+    paymentRequest = stripe.paymentRequest({
+      country: STORE_COUNTRY,
+      currency: STORE_CURRENCY,
+      total: { label: 'NexaPharm', amount: 100 },
+      requestPayerName: true,
+      requestPayerEmail: true,
     });
-  });
+
+    prButton = elements.create('paymentRequestButton', { paymentRequest });
+
+    paymentRequest.canMakePayment().then((result) => {
+      if (result) {
+        prButton.mount('#payment-request-button');
+        $('#payment-request-row').hidden = false;
+        $('#card-divider').querySelector('span').textContent = 'o paga con tarjeta';
+      }
+    });
+
+    paymentRequest.on('paymentmethod', async (ev) => {
+      try {
+        const clientSecret = await createPaymentIntent();
+        const { error, paymentIntent } = await stripe.confirmCardPayment(
+          clientSecret,
+          { payment_method: ev.paymentMethod.id },
+          { handleActions: false }
+        );
+        if (error) {
+          ev.complete('fail');
+          showPaymentError(error.message);
+          return;
+        }
+        ev.complete('success');
+        if (paymentIntent.status === 'requires_action') {
+          const { error: actionError } = await stripe.confirmCardPayment(clientSecret);
+          if (actionError) {
+            showPaymentError(actionError.message);
+            return;
+          }
+        }
+        onPaymentSuccess(paymentIntent.id);
+      } catch (err) {
+        ev.complete('fail');
+        showPaymentError(err.message);
+      }
+    });
+  }
+
+  function updatePaymentRequestTotal(totalAmount) {
+    if (!paymentRequest) return;
+    paymentRequest.update({ total: { label: 'NexaPharm', amount: Math.round(totalAmount * 100) } });
+  }
 
   // ---------- Validation ----------
   function setError(fieldId, message) {
@@ -417,23 +480,10 @@
       valid = false;
     } else setError('email', '');
 
-    const digits = cardNumberInput.value.replace(/\D/g, '');
-    if (digits.length < 13) {
-      setError('cardNumber', 'Número de tarjeta incompleto');
+    if (!fieldComplete.cardNumber || !fieldComplete.cardExpiry || !fieldComplete.cardCvc) {
+      if (!$('#cardNumber-errors').textContent) $('#cardNumber-errors').textContent = 'Completa los datos de tu tarjeta';
       valid = false;
-    } else setError('cardNumber', '');
-
-    const expiry = expiryInput.value;
-    const expMatch = /^(\d{2})\/(\d{2})$/.exec(expiry);
-    if (!expMatch || Number(expMatch[1]) < 1 || Number(expMatch[1]) > 12) {
-      setError('expiry', 'Fecha inválida');
-      valid = false;
-    } else setError('expiry', '');
-
-    if (cvcInput.value.length < 3) {
-      setError('cvc', 'CVC inválido');
-      valid = false;
-    } else setError('cvc', '');
+    }
 
     if (!nameInput.value.trim()) {
       setError('cardName', 'Requerido');
@@ -453,40 +503,92 @@
   const form = $('#checkout-form');
   const payBtn = $('#pay-btn');
   const successOverlay = $('#success-overlay');
+  const paymentErrorEl = $('#payment-error');
 
-  form.addEventListener('submit', (e) => {
+  function showPaymentError(message) {
+    paymentErrorEl.textContent = message || 'No se pudo procesar el pago. Intenta de nuevo.';
+    paymentErrorEl.hidden = false;
+  }
+
+  function clearPaymentError() {
+    paymentErrorEl.hidden = true;
+    paymentErrorEl.textContent = '';
+  }
+
+  async function createPaymentIntent() {
+    const resp = await fetch('/api/create-payment-intent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: state.cart.map((l) => ({ id: l.id, qty: l.qty })),
+        promoCode: state.promoCode,
+        email: $('#email').value.trim(),
+      }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'No se pudo iniciar el pago');
+    return data.clientSecret;
+  }
+
+  function onPaymentSuccess(orderId) {
+    $('#order-id').textContent = orderId;
+    successOverlay.hidden = false;
+    state.cart = [];
+    state.discount = 0;
+    renderCart();
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    clearPaymentError();
     if (!validateForm()) {
       payBtn.classList.add('is-shake');
       setTimeout(() => payBtn.classList.remove('is-shake'), 400);
       return;
     }
-    runPaymentFlow();
-  });
+    if (!stripe) {
+      showPaymentError('Stripe no está disponible en este momento.');
+      return;
+    }
 
-  function runPaymentFlow() {
     payBtn.classList.add('is-loading');
     payBtn.disabled = true;
-    setTimeout(() => {
+    try {
+      const clientSecret = await createPaymentIntent();
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardNumberElement,
+          billing_details: {
+            name: nameInput.value.trim(),
+            email: $('#email').value.trim(),
+            address: {
+              country: $('#country').value,
+              postal_code: $('#zip').value.trim(),
+            },
+          },
+        },
+      });
+      if (error) throw new Error(error.message || 'El pago no pudo procesarse');
+      onPaymentSuccess(paymentIntent.id);
+    } catch (err) {
+      showPaymentError(err.message);
+    } finally {
       payBtn.classList.remove('is-loading');
       payBtn.disabled = false;
-      const orderId = '#NX-' + Math.floor(100000 + Math.random() * 900000);
-      $('#order-id').textContent = orderId;
-      successOverlay.hidden = false;
-      state.cart = [];
-      state.discount = 0;
-      renderCart();
-    }, 1600);
-  }
+    }
+  });
 
   $('#reset-btn').addEventListener('click', () => {
     successOverlay.hidden = true;
     form.reset();
-    previewNumber.textContent = '•••• •••• •••• ••••';
     previewName.textContent = 'NOMBRE APELLIDO';
-    previewExpiry.textContent = 'MM/YY';
-    previewCvc.textContent = '•••';
-    brandIcon.innerHTML = brandSvg('generic');
+    if (cardNumberElement) cardNumberElement.clear();
+    if (cardExpiryElement) cardExpiryElement.clear();
+    if (cardCvcElement) cardCvcElement.clear();
+    fieldComplete.cardNumber = false;
+    fieldComplete.cardExpiry = false;
+    fieldComplete.cardCvc = false;
+    clearPaymentError();
     $('#promo-msg').textContent = '';
     $('#promo-input').value = '';
     showCartView();

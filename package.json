@@ -1,0 +1,9 @@
+{
+  "name": "nexapharm-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NexaPharm marketing site with Stripe-powered checkout (Vercel serverless functions).",
+  "dependencies": {
+    "stripe": "^17.0.0"
+  }
+}

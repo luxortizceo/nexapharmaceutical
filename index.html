@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
 
@@ -588,43 +589,28 @@
           <span class="field-error" data-for="email"></span>
         </div>
 
-        <div class="express-row">
-          <button type="button" class="express-btn apple-pay" data-express="Apple Pay">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.7 1c.1 1.1-.3 2.2-1 3-.7.8-1.8 1.5-2.9 1.4-.1-1.1.4-2.2 1-3 .8-.8 2-1.4 2.9-1.4zM19.9 17.3c-.5 1.1-.7 1.6-1.4 2.6-.9 1.4-2.2 3.1-3.8 3.1-1.4 0-1.8-.9-3.7-.9-1.9 0-2.4.9-3.7.9-1.6 0-2.8-1.5-3.7-2.9C1.4 17 .6 12.4 2.4 9.3c.9-1.6 2.5-2.6 4.2-2.6 1.5 0 2.5 1 3.7 1 1.2 0 2-.9 3.7-.9 1.4 0 2.9.8 3.8 2.1-3.3 1.8-2.8 6.6.1 8.4z"/></svg>
-            Apple Pay
-          </button>
-          <button type="button" class="express-btn google-pay" data-express="Google Pay">
-            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 11v2.9h4.1c-.2 1-1.4 3-4.1 3-2.5 0-4.5-2-4.5-4.5S9.5 7.9 12 7.9c1.4 0 2.4.6 2.9 1.1l2-1.9C15.6 5.9 14 5.2 12 5.2c-3.7 0-6.8 3-6.8 6.8s3.1 6.8 6.8 6.8c3.9 0 6.5-2.7 6.5-6.6 0-.4 0-.8-.1-1.2H12z"/></svg>
-            Google Pay
-          </button>
-          <button type="button" class="express-btn link-pay" data-express="Link">
-            <span class="link-dot">•</span> link
-          </button>
+        <div class="express-row" id="payment-request-row" hidden>
+          <div id="payment-request-button"></div>
         </div>
 
-        <div class="divider"><span>o paga con tarjeta</span></div>
+        <div class="divider" id="card-divider"><span>Paga con tarjeta</span></div>
 
         <div class="field">
           <label for="cardNumber">Número de tarjeta</label>
-          <div class="input-with-icon">
-            <input type="text" id="cardNumber" inputmode="numeric" placeholder="1234 1234 1234 1234" autocomplete="cc-number" maxlength="23" required>
-            <span class="card-brand-icon" id="brand-icon">
-              <svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect width="20" height="14" rx="2.5" fill="#2A3344"/></svg>
-            </span>
-          </div>
-          <span class="field-error" data-for="cardNumber"></span>
+          <div id="cardNumber" class="stripe-element"></div>
+          <span class="field-error" id="cardNumber-errors"></span>
         </div>
 
         <div class="field-row">
           <div class="field">
-            <label for="expiry">Vencimiento</label>
-            <input type="text" id="expiry" inputmode="numeric" placeholder="MM/YY" autocomplete="cc-exp" maxlength="5" required>
-            <span class="field-error" data-for="expiry"></span>
+            <label for="cardExpiry">Vencimiento</label>
+            <div id="cardExpiry" class="stripe-element"></div>
+            <span class="field-error" id="cardExpiry-errors"></span>
           </div>
           <div class="field">
-            <label for="cvc">CVC</label>
-            <input type="text" id="cvc" inputmode="numeric" placeholder="123" autocomplete="cc-csc" maxlength="4" required>
-            <span class="field-error" data-for="cvc"></span>
+            <label for="cardCvc">CVC</label>
+            <div id="cardCvc" class="stripe-element"></div>
+            <span class="field-error" id="cardCvc-errors"></span>
           </div>
         </div>
 
@@ -658,6 +644,8 @@
           <input type="checkbox" checked>
           Guardar mi información para pagos más rápidos
         </label>
+
+        <p class="payment-error" id="payment-error" hidden></p>
 
         <button type="submit" class="pay-btn" id="pay-btn">
           <span class="pay-btn-label">

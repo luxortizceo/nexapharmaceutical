@@ -667,25 +667,26 @@ form{display:flex; flex-direction:column; gap:16px;}
 .field input.is-invalid{border-color:var(--danger); background:#fff5f5;}
 .field-error{font-size:.72rem; color:var(--danger); font-weight:600; min-height:1px;}
 .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
-.input-with-icon{position:relative; display:flex;}
-.input-with-icon input{flex:1; padding-right:46px;}
-.card-brand-icon{position:absolute; right:12px; top:50%; transform:translateY(-50%);}
 
-.express-row{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
-.express-btn{
-  display:flex; align-items:center; justify-content:center; gap:6px;
-  padding:12px 8px; border-radius:var(--radius-sm); border:1.5px solid var(--line);
-  background:#0b0f14; color:#fff; font-weight:700; font-size:.82rem;
-  cursor:pointer; transition:transform .15s, box-shadow .15s; font-family:inherit;
+.stripe-element{
+  border:1.5px solid var(--line); border-radius:var(--radius-sm); padding:12px 14px;
+  background:var(--panel-muted); transition:border-color .18s, box-shadow .18s, background .18s;
 }
-.express-btn.google-pay{background:#fff; color:#1f1f1f; border-color:var(--line);}
-.express-btn.link-pay{background:#1a1f36;}
-.link-dot{color:var(--accent-a); font-size:1.3rem; line-height:0;}
-.express-btn:hover{transform:translateY(-1px); box-shadow:0 8px 18px -8px rgba(0,0,0,.35);}
-.express-btn:active{transform:translateY(0);}
+.stripe-element.StripeElement--focus{
+  border-color:var(--accent-b); background:#fff; box-shadow:0 0 0 4px rgba(129,140,248,.14);
+}
+.stripe-element.is-invalid{border-color:var(--danger); background:#fff5f5;}
+
+.express-row{display:flex;}
+.express-row > div{width:100%;}
 
 .divider{display:flex; align-items:center; gap:12px; color:#9aa2b1; font-size:.76rem; font-weight:600; margin:2px 0;}
 .divider::before,.divider::after{content:""; flex:1; height:1px; background:var(--line);}
+
+.payment-error{
+  background:#fff5f5; border:1px solid rgba(248,113,113,.35); color:var(--danger);
+  font-size:.82rem; font-weight:600; padding:10px 14px; border-radius:var(--radius-sm); margin:0;
+}
 
 .save-info{display:flex; align-items:center; gap:8px; font-size:.8rem; color:#5b6472;}
 
@@ -807,7 +808,6 @@ form{display:flex; flex-direction:column; gap:16px;}
 /* ============ Small screens: shared ============ */
 @media (max-width:520px){
   .section-inner{padding:56px 20px;}
-  .express-row{grid-template-columns:1fr;}
   .field-row{grid-template-columns:1fr;}
   .payment-view{padding:16px 18px 20px;}
 }
